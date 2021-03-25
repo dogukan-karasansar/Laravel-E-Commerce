@@ -20,3 +20,4 @@ Route::get('/add-cart/{product}', [CartController::class, 'add'])->name('cart.ad
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index')->middleware('auth:sanctum');
 Route::get('/cart/destroy/{id}', [CartController::class, 'destroy'])->name('cart.destroy')->middleware('auth:sanctum');
 Route::get('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update')->middleware('auth:sanctum');
+Route::get('/cart/order', [CartController::class, 'save'])->name('cart.save')->middleware('auth:sanctum');

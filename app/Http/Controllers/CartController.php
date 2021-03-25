@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart as ModelsCart;
+use App\Models\Order;
 use App\Models\Product;
 use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Illuminate\Http\Request;
@@ -10,7 +12,8 @@ class CartController extends Controller
 {
     public function index() {
         $cartItems = Cart::session(auth()->user()->id)->getContent();
-        return view('cart.index', compact('cartItems'));
+        $orders = Order::where('user', auth()->user()->id)->with('carts')->get();
+        return view('cart.index', compact('cartItems', 'orders'));
     }
 
     public function add(Product $product) {
@@ -60,5 +63,22 @@ class CartController extends Controller
         ]);
 
         return back();
+    }
+
+    public function save() {
+        $items = Cart::session(auth()->user()->id)->getContent();
+        $cart =  ModelsCart::create([
+            'user' => auth()->user()->id,
+            'cart_data' => $items,
+        ]);
+
+        Order::create([
+            'user' => auth()->user()->id,
+            'cart' => $cart->id
+        ]);
+        Cart::session(auth()->user()->id)->clear();
+
+
+        return redirect()->route('index');
     }
 }

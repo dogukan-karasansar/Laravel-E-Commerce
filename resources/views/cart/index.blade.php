@@ -5,7 +5,6 @@
         </h2>
     </x-slot>
 
-
     <div class="flex justify-center my-6">
         <div class="flex flex-col w-full p-8 text-gray-800 bg-white shadow-lg pin-r pin-y md:w-4/5 lg:w-4/5">
             <div class="flex-1">
@@ -61,6 +60,19 @@
                             </td>
                         </tr>
                         @endforeach
+
+                        <span class="text-sm lg:text-base font-medium">Toplam:
+                            {{\Cart::session(auth()->user()->id)->getSubTotal()}}₺</span>
                     </tbody>
                 </table>
+                <a href="{{route('cart.save')}}" type="button"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Sipariş Ver
+                </a>
+                </form>
+
+                <div>
+
+                </div>
 </x-app-layout>
+
